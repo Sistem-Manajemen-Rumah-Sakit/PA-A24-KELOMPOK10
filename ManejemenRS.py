@@ -937,26 +937,6 @@ def baca_obat_dari_csv(file_csv):
             daftar_obat.append({"Nama Obat": row["Nama Obat"], "Harga": float(row["Harga"])})
     return daftar_obat
 
-def buat_invoice(username, nama_obat, harga_obat, sisa_saldo):
-
-    invoice_filename = "invoice_obat.txt"
-    with open(invoice_filename, "w") as file:
-        file.write("INVOICE PEMBELIAN OBAT\n")
-        file.write("=========================\n")
-        file.write(f"Nama Pembeli  : {username}\n")
-        file.write(f"Nama Obat     : {nama_obat}\n")
-        file.write(f"Harga Obat    : Rp.{harga_obat:,.2f}\n")
-        file.write(f"Sisa Saldo    : Rp.{sisa_saldo:,.2f}\n")
-        file.write("=========================\n")
-        file.write("Terima kasih atas pembelian Anda!\n")
-
-    return invoice_filename
-
-def print_invoice(invoice_filename):
-
-    with open(invoice_filename, "r") as file:
-        print(file.read())
-
 def beli_obat(username):
     os.system("cls")
     tabel_obat()  
@@ -986,8 +966,17 @@ def beli_obat(username):
                         print(f"Anda telah membeli {nama_obat} seharga Rp.{harga_obat:,}.")
                         print(f"Sisa saldo Anda: Rp.{sisa_saldo:,}")
 
-                        invoice_filename = buat_invoice(username, nama_obat, harga_obat, sisa_saldo)
-                        print_invoice(invoice_filename)
+                        current_time = datetime.now()
+                        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+                        invoice_content = invoice_obat(formatted_time, harga_obat, username, nama_obat)
+
+                        invoice_path = "C:/Users/Asus GK/Documents/tea/invoice_obat.txt"
+                        with open(invoice_path, "a") as invoice_file:
+                            invoice_file.write(invoice_content + "\n")
+                        print(invoice_content)
+
+                        with open(json_path, "w") as jsondatabase:
+                            json.dump(data, jsondatabase, indent=4)
 
                         menu_pasien(username)  
                     else:
@@ -1328,7 +1317,17 @@ def invoice_ruangan(formatted_time, harga_ruangan, username, kelas_ruangan):
     invoice_content = f"===== Detail Invoice =====\n"
     invoice_content += f"Waktu pemesanan: {formatted_time}\n"
     invoice_content += f"Harga: Rp.{harga_ruangan:,}\n"
-    invoice_content += f"Obat: {kelas_ruangan}\n"
+    invoice_content += f"Ruangan: {kelas_ruangan}\n"
+    invoice_content += f"Pembeli: {username}\n"
+    invoice_content += f"===========================\n"
+    invoice_content += f"Terimakasih telah memesan.\n"
+    return invoice_content
+
+def invoice_obat(formatted_time, harga_obat, username, nama_obat):
+    invoice_content = f"===== Detail Invoice =====\n"
+    invoice_content += f"Waktu pemesanan: {formatted_time}\n"
+    invoice_content += f"Harga: Rp.{harga_obat:,}\n"
+    invoice_content += f"Obat: {nama_obat}\n"
     invoice_content += f"Pembeli: {username}\n"
     invoice_content += f"===========================\n"
     invoice_content += f"Terimakasih telah memesan.\n"
