@@ -128,6 +128,7 @@ def crud_obat():
         awal()
     else:
         print("Masukkan format yang benar.")
+        crud_obat()
 
 # ------------------------------------------- CRUD REG --------------------------------------------------
 
@@ -205,7 +206,7 @@ def crud_reg():
         awal()
     else:
         print("Masukkan format yang benar.")
-
+        crud_reg()
 # ------------------------------------------- CRUD REG --------------------------------------------------
 
 file_path2 = 'datapasienBPJS.csv'
@@ -280,6 +281,7 @@ def crud_bpjs():
         awal()
     else:
         print("Masukkan format yang benar.")
+        crud_bpjs()
 
 # ------------------------------------------- CRUD Ruangan --------------------------------------------------
 
@@ -354,6 +356,7 @@ def crud_ruang():
         awal()
     else:
         print("Masukkan format yang benar.")
+        crud_ruang()
 
 # ------------------------------------------- CRUD Jadwal Dokter --------------------------------------------------
 
@@ -703,6 +706,7 @@ def menu_admin():
         awal()
     else:
         print("Masukkan format yang benar.")
+        menu_admin()
 
 # -------------------------------------- Menu Utama ---------------------------------------------------------
 
@@ -735,6 +739,7 @@ def wologin():
         exit()
     else:
         print("Masukkan format yang benar.")
+        wologin()
 
 def awal():
     print("╔══════════════════════════════════════════════════════════╗")
@@ -777,6 +782,7 @@ def kelas():
         wologin()
     else:
         print("Masukkan format yang benar.")
+        kelas()
 
 def fasilitas():
     print("╔══════════════════════════════════════════════════════════╗")
@@ -801,6 +807,7 @@ def fasilitas():
         wologin()
     else:
         print("Masukkan format yang benar.")
+        fasilitas()
 
 def kontak(): 
     print("╔══════════════════════════════════════════════════════════╗")
@@ -819,6 +826,7 @@ def kontak():
         wologin()
     else:
         print("Masukkan format yang benar.")
+        kontak()
 
 def poli(): 
     print("╔══════════════════════════════════════════════════════════╗")
@@ -845,6 +853,7 @@ def poli():
         wologin()
     else:
         print("Masukkan format yang benar.")
+        poli()
 
 def penunjang():
     print("╔══════════════════════════════════════════════════════════╗")
@@ -869,6 +878,7 @@ def penunjang():
         wologin()
     else:
         print("Masukkan format yang benar.")
+        penunjang()
 
 # -------------------------------------- Ilmu Persaldoan ----------------------------------------------------
 
@@ -927,6 +937,26 @@ def baca_obat_dari_csv(file_csv):
             daftar_obat.append({"Nama Obat": row["Nama Obat"], "Harga": float(row["Harga"])})
     return daftar_obat
 
+def buat_invoice(username, nama_obat, harga_obat, sisa_saldo):
+
+    invoice_filename = "invoice_obat.txt"
+    with open(invoice_filename, "w") as file:
+        file.write("INVOICE PEMBELIAN OBAT\n")
+        file.write("=========================\n")
+        file.write(f"Nama Pembeli  : {username}\n")
+        file.write(f"Nama Obat     : {nama_obat}\n")
+        file.write(f"Harga Obat    : Rp.{harga_obat:,.2f}\n")
+        file.write(f"Sisa Saldo    : Rp.{sisa_saldo:,.2f}\n")
+        file.write("=========================\n")
+        file.write("Terima kasih atas pembelian Anda!\n")
+
+    return invoice_filename
+
+def print_invoice(invoice_filename):
+
+    with open(invoice_filename, "r") as file:
+        print(file.read())
+
 def beli_obat(username):
     os.system("cls")
     tabel_obat()  
@@ -951,23 +981,13 @@ def beli_obat(username):
                     if user["Saldo_EMoney"] >= harga_obat:
 
                         user["Saldo_EMoney"] -= harga_obat
+                        sisa_saldo = user["Saldo_EMoney"]
+
                         print(f"Anda telah membeli {nama_obat} seharga Rp.{harga_obat:,}.")
-                        print(f"Sisa saldo Anda: Rp.{user['Saldo_EMoney']:,}")
+                        print(f"Sisa saldo Anda: Rp.{sisa_saldo:,}")
 
-                        current_time = datetime.now()
-                        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-                        invoice_content = invoice_obat(formatted_time, harga_obat, username, nama_obat)
-
-                        invoice_path = "C:/Users/Asus GK/Documents/tea/invoice_obat.txt"
-                        with open(invoice_path, "a") as invoice_file:
-                            invoice_file.write(invoice_content + "\n")
-                        invoice_path = "C:/Users/Asus GK/Documents/tea/invoice_obat.txt"
-                        with open(invoice_path, "a") as invoice_file:
-                            invoice_file.write(invoice_content)
-                        print(invoice_content)
-
-                        with open(json_path, "w") as jsondatabase:
-                            json.dump(data, jsondatabase, indent=4)
+                        invoice_filename = buat_invoice(username, nama_obat, harga_obat, sisa_saldo)
+                        print_invoice(invoice_filename)
 
                         menu_pasien(username)  
                     else:
@@ -983,7 +1003,7 @@ def beli_obat(username):
             menu_pasien(username)
     else:
         print("Obat dengan nama tersebut tidak tersedia.")
-        menu_pasien(username) 
+        menu_pasien(username)
 
 def baca_ruang_dari_csv(file_csv):
     daftar_ruang = []
@@ -992,9 +1012,9 @@ def baca_ruang_dari_csv(file_csv):
         for row in reader:
             daftar_ruang.append({
                 "Ruangan": int(row["Ruangan"]),
-                "Status": row["Status"],
                 "Kelas": row["Kelas"],
-                "Harga": float(row["Harga"])
+                "Harga": float(row["Harga"]),
+                "Status": row["Status"]
             })
     return daftar_ruang
 
@@ -1132,6 +1152,7 @@ def menu_pasien(username):
         awal()
     else:
         print("Masukkan format yang benar.")
+        menu_pasien(username)
 
 # ----------------------------------------------- BPJS AREA ---------------------------------------------------------
 
@@ -1301,23 +1322,10 @@ def menu_bpjs():
         awal()
     else:
         print("Masukkan format yang benar.")
-
-def invoice_obat(formatted_time, harga_obat, username, nama_obat):
-    invoice_content = f"╔════════════════════════════════════╗"
-    invoice_content = f"|           Detail Invoice           |"
-    invoice_content = f"╚════════════════════════════════════╝"
-    invoice_content += f"Waktu pembelian: {formatted_time}\n"
-    invoice_content += f"Harga: Rp.{harga_obat:,}\n"
-    invoice_content += f"Obat: {nama_obat}\n"
-    invoice_content += f"Pembeli: {username}\n"
-    invoice_content += f"===========================\n"
-    invoice_content += f"Terimakasih telah membeli.\n"
-    return invoice_content
+        menu_bpjs()
 
 def invoice_ruangan(formatted_time, harga_ruangan, username, kelas_ruangan):
-    invoice_content = f"╔════════════════════════════════════╗"
-    invoice_content = f"|           Detail Invoice           |"
-    invoice_content = f"╚════════════════════════════════════╝"
+    invoice_content = f"===== Detail Invoice =====\n"
     invoice_content += f"Waktu pemesanan: {formatted_time}\n"
     invoice_content += f"Harga: Rp.{harga_ruangan:,}\n"
     invoice_content += f"Obat: {kelas_ruangan}\n"
