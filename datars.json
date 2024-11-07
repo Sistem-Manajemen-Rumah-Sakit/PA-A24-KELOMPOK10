@@ -1,0 +1,74 @@
+{
+    "Admin": {
+        "Username": "admin",
+        "PIN": "000"
+    },
+    "Dokter": [
+        {
+            "Nama_Staff": "Dr. A",
+            "Username": "dokter1",
+            "PIN": "111"
+        },
+        {
+            "Nama_Staff": "Dr. B",
+            "Username": "dokter2",
+            "PIN": "222"
+        }
+    ],
+    "Apoteker": [
+        {
+            "Nama_Staff": "Farmasi1",
+            "Username": "apoteker1",
+            "PIN": "222"
+        },
+        {
+            "Nama_Staff": "Farmasi2",
+            "Username": "apoteker2",
+            "PIN": "555"
+        }
+    ],
+    "Perawat": [
+        {
+            "Nama_Staff": "Pikacu",
+            "Username": "perawat1",
+            "PIN": "333"
+        },
+        {
+            "Nama_Staff": "Pikaci",
+            "Username": "perawat2",
+            "PIN": "666"
+        }
+    ],
+    "Pasien_Reguler": [
+        {
+            "Nama_Pasien": "Indah",
+            "Username": "indah",
+            "PIN": "123",
+            "Saldo_EMoney": 0
+        },
+        {
+            "Nama_Pasien": "Lala",
+            "Username": "lala",
+            "PIN": "456",
+            "Saldo_EMoney": 0
+        },
+        {
+            "Nama_Pasien": "putri",
+            "Username": "syafana",
+            "PIN": "123",
+            "Saldo_EMoney": 100000000
+        }
+    ],
+    "Pasien_BPJS": [
+        {
+            "Nama_Pasien": "Zelsya",
+            "Username": "zelsya",
+            "PIN": "123"
+        },
+        {
+            "Nama_Pasien": "Putri",
+            "Username": "putri",
+            "PIN": "123"
+        }
+    ]
+}

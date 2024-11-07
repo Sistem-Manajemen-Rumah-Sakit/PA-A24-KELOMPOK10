@@ -1,0 +1,30 @@
+===== Detail Invoice =====
+Waktu Transfer: 2024-11-07 21:44:28
+Jumlah: Rp.32.0
+Obat: paracetamol
+Pembeli: syafana
+===========================
+Terimakasih telah membeli.
+
+===== Detail Invoice =====
+Waktu Transfer: 2024-11-07 21:44:28
+Jumlah: Rp.32.0
+Obat: paracetamol
+Pembeli: syafana
+===========================
+Terimakasih telah membeli.
+===== Detail Invoice =====
+Waktu pembelian: 2024-11-07 21:46:29
+Jumlah: Rp.62.0
+Obat: antibiotik
+Pembeli: syafana
+===========================
+Terimakasih telah membeli.
+
+===== Detail Invoice =====
+Waktu pembelian: 2024-11-07 21:46:29
+Jumlah: Rp.62.0
+Obat: antibiotik
+Pembeli: syafana
+===========================
+Terimakasih telah membeli.
