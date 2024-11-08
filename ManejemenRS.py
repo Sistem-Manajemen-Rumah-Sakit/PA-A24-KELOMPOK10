@@ -597,7 +597,7 @@ def login():
     try:
         while True:  
             for i in range(anu):
-                input_username = input("Username : ")
+                input_username = input("Username : ").lower()
                 input_pin = pwinput.pwinput(prompt="PIN : ")
 
                 login_admin = data.get("Admin")
@@ -1256,23 +1256,25 @@ def ajuan_ruang():
         print("Nomor ruangan tidak valid. Silakan coba lagi.")
         ajuan_ruang()
 
+import csv
+
 def ajuan_dokter():
     dokter = {}
     with open("jadwaldokter.csv", mode="r") as file:
         reader = csv.DictReader(file)
+
         for row in reader:
             dokter[row["Nama dokter"]] = {
-                "spesialis": row["spesialis"],
-                "jadwal": row["Jadwal"]
+                "Spesialis": row["Spesialis"],
+                "Jadwal": row["Jadwal"]
             }
 
     input_dokter = input("Masukkan nama dokter yang ingin Anda temui: ").capitalize()
 
     if input_dokter in dokter:
-
-        spesialis = dokter[input_dokter]["spesialis"]
-        jadwal = dokter[input_dokter]["jadwal"]
-        jawab = input(f"Anda akan menemui {input_dokter}, spesialis {spesialis} dengan jadwal hari {jadwal}. Konfirmasi? (y/n): ")
+        Spesialis = dokter[input_dokter]["Spesialis"]
+        Jadwal = dokter[input_dokter]["Jadwal"]
+        jawab = input(f"Anda akan menemui {input_dokter}, spesialis {Spesialis} dengan jadwal hari {Jadwal}. Konfirmasi? (y/n): ")
         
         if jawab.lower() == "y":
             print(f"Janji temu dengan {input_dokter} berhasil dibuat.")
@@ -1286,6 +1288,7 @@ def ajuan_dokter():
     else:
         print("Nama dokter tidak ditemukan. Silakan coba lagi.")
         ajuan_dokter()
+
 
 def menu_bpjs():
     print("╔══════════════════════════════════════════════════════════╗")
