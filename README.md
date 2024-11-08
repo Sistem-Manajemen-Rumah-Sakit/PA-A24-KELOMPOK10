@@ -874,7 +874,7 @@ def penunjang():
         print("Masukkan format yang benar.")
         penunjang()
 
-# Menampilkan bagi pasien yang iingin mengisi atau mengecek saldo lewat E-Money
+# Menampilkan bagi pasien yang ingin mengisi atau mengecek saldo lewat E-Money
 
 def isi_saldo(username):
     os.system("cls")
