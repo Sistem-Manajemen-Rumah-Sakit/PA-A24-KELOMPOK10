@@ -100,6 +100,7 @@ def delete_obat(file_path):
         df = df[df['Nama Obat'] != obat_name]
         df.to_csv(file_path, index=False)
         print(f"Obat {obat_name} berhasil dihapus!")
+        crud_obat()
     else:
         print(f"{obat_name} tidak ditemukan. Masukkan obat yang tersedia. ")
         delete_obat(file_path)
@@ -288,19 +289,25 @@ def crud_bpjs():
 file_path3 = 'dataruangan.csv'
 
 def create_ruang(file_path3):
-    ruangan = input("Masukkan nomor ruangan                            : ")
+    ruangan = input("Masukkan nomor ruangan baru                          : ")
     status = input("Masukkan status ruangan (Diisi/Kosong)            : ")
     kelas = input("Masukkan kelas ruangan (Kelas 1/2/3/VIP/VVIP)     : ")
 
-    df = pd.read_csv(file_path3)
+    try:
+        df = pd.read_csv(file_path3)
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=["ruangan", "status", "kelas"])
+        print("File CSV tidak ditemukan, membuat file baru.")
 
     new_data = [ruangan, status, kelas]
-    new_row = pd.DataFrame([new_data], columns=df.columns)
+    
+    new_row = pd.DataFrame([new_data], columns=df.columns[:len(new_data)])
+    
     df = pd.concat([df, new_row], ignore_index=True)
     df.to_csv(file_path3, index=False)
 
     print(f"Ruang {ruangan} berhasil ditambahkan ke data.")
-    crud_ruang()
+    crud_ruang() 
 
 def update_ruang(file_path3):
     ruangan = input("Masukkan nomor ruangan yang ingin diperbarui: ")
@@ -360,12 +367,12 @@ def crud_ruang():
 
 # ------------------------------------------- CRUD Jadwal Dokter --------------------------------------------------
 
-file_path4 = 'jadwaldoktercsv'
+file_path4 = 'jadwaldokter.csv'
 
 def create_jadwal(file_path4):
     nama_dokter = input("Masukkan nama dokter                  : ")
     spesialis = input("Masukkan spesialis dokter             : ")
-    jadwal = input("Masukkan jadwal praktik (e.g. Senin-Rabu) : ")
+    jadwal = input("Masukkan hari praktik : ")
 
     df = pd.read_csv(file_path4)
 
@@ -375,7 +382,7 @@ def create_jadwal(file_path4):
     df.to_csv(file_path4, index=False)
 
     print(f"Jadwal dokter {nama_dokter} berhasil ditambahkan.")
-    crud_jadwal(file_path4)
+    crud_jadwal()
 
 def update_jadwal(file_path4):
     nama_dokter = input("Masukkan nama dokter yang ingin diperbarui: ")
@@ -395,14 +402,15 @@ def update_jadwal(file_path4):
         update_jadwal(file_path4)
 
 def delete_jadwal(file_path4):
-    nama_dokter = input("Masukkan nama dokter yang ingin dihapus: ")
+    nama_dokter = input("Masukkan nama dokter yang ingin dihapus: ").lower()
     df = pd.read_csv(file_path4)
     
     if nama_dokter in df['Nama dokter'].values:
-        # Menghapus data dokter
+
         df = df[df['Nama dokter'] != nama_dokter]
         df.to_csv(file_path4, index=False)
         print(f"Jadwal dokter {nama_dokter} berhasil dihapus!")
+        crud_jadwal()
     else:
         print(f"Dokter {nama_dokter} tidak ditemukan. Masukkan nama yang tersedia.")
         delete_jadwal(file_path4)
@@ -475,6 +483,8 @@ def menu_dokter():
     elif jawab_menudokter == '3':
         tabel_bpjs()
         menu_dokter()
+    elif jawab_menudokter == '0':
+        awal()
     else:
         print("Masukkan format yang benar.")
         menu_dokter()
@@ -594,81 +604,76 @@ def login():
     anu = 3  
     error_count = 0  
 
-    try:
-        while True:  
-            for i in range(anu):
-                input_username = input("Username : ").lower()
-                input_pin = pwinput.pwinput(prompt="PIN : ")
+    while True:  
+        for i in range(anu):
+            input_username = input("Username : ").lower()
+            input_pin = pwinput.pwinput(prompt="PIN : ")
 
-                login_admin = data.get("Admin")
-                if login_admin and input_username == login_admin.get("Username"):
-                    if input_pin == login_admin.get("PIN"):
-                        print("Login berhasil sebagai Admin!")
-                        menu_admin()  
-                        return  
-                    else:
-                        print("PIN Admin salah!")
-                        error_count += 1
+            login_admin = data.get("Admin")
+            if login_admin and input_username == login_admin.get("Username"):
+                if input_pin == login_admin.get("PIN"):
+                    print("Login berhasil sebagai Admin!")
+                    menu_admin()  
+                    return  
+                else:
+                    print("PIN Admin salah!")
+                    error_count += 1
 
-                for role in ["Dokter", "Apoteker", "Perawat"]:
-                    login_users = data.get(role)
-                    if login_users:
-                        for user in login_users:
-                            if input_username == user.get("Username"):
-                                if input_pin == user.get("PIN"):
-                                    print(f"Login berhasil sebagai {role} {user.get('Nama_Staff')}!")
-                                    if role == "Dokter":
-                                        menu_dokter()  
-                                    elif role == "Apoteker":
-                                        menu_farmasi()  
-                                    elif role == "Perawat":
-                                        menu_perawat()  
-                                    return 
-                                else:
-                                    print(f"PIN untuk {role} salah!")
-                                    error_count += 1
-
-                login_reguler = data.get("Pasien_Reguler")
-                if login_reguler:
-                    for user in login_reguler:
+            for role in ["Dokter", "Apoteker", "Perawat"]:
+                login_users = data.get(role)
+                if login_users:
+                    for user in login_users:
                         if input_username == user.get("Username"):
                             if input_pin == user.get("PIN"):
-                                print(f"Login berhasil sebagai Pasien Reguler {user.get('Nama_Pasien')}!")
-                                username = input_username  
-                                menu_pasien(username)  
+                                print(f"Login berhasil sebagai {role} {user.get('Nama_Staff')}!")
+                                if role == "Dokter":
+                                    menu_dokter()  
+                                elif role == "Apoteker":
+                                    menu_farmasi()  
+                                elif role == "Perawat":
+                                    menu_perawat()  
                                 return 
                             else:
-                                print("PIN Pasien Reguler salah!")
+                                print(f"PIN untuk {role} salah!")
                                 error_count += 1
 
+            login_reguler = data.get("Pasien_Reguler")
+            if login_reguler:
+                for user in login_reguler:
+                    if input_username == user.get("Username"):
+                        if input_pin == user.get("PIN"):
+                            print(f"Login berhasil sebagai Pasien Reguler {user.get('Nama_Pasien')}!")
+                            username = input_username  
+                            menu_pasien(username)  
+                            return 
+                        else:
+                            print("PIN Pasien Reguler salah!")
+                            error_count += 1
 
-                login_bpjs = data.get("Pasien_BPJS")
-                if login_bpjs:
-                    for user in login_bpjs:
-                        if input_username == user.get("Username"):
-                            if (input_pin) == user.get("PIN"):
-                                print(f"Login berhasil sebagai Pasien BPJS {user.get('Nama_Pasien')}!")
-                                menu_bpjs() 
-                                return 
-                            else:
-                                print("PIN Pasien BPJS salah!")
-                                error_count += 1
 
-                print("Data salah. Silakan coba lagi.")
+            login_bpjs = data.get("Pasien_BPJS")
+            if login_bpjs:
+                for user in login_bpjs:
+                    if input_username == user.get("Username"):
+                        if (input_pin) == user.get("PIN"):
+                            print(f"Login berhasil sebagai Pasien BPJS {user.get('Nama_Pasien')}!")
+                            menu_bpjs() 
+                            return 
+                        else:
+                            print("PIN Pasien BPJS salah!")
+                            error_count += 1
 
-                if error_count == 2:
-                    print("Anda telah melakukan 2 kesalahan. Silakan coba lagi.")
-                    error_count = 0 
-                
-                if i == anu - 1:
-                    print("Anda telah melakukan percobaan 3 kali. Akses diblokir.")
-                    loading(10)  
-                    print("Silahkan masukkan data kembali.")
-                    login() 
+            print("Data salah. Silakan coba lagi.")
 
-    except ValueError:
-        print("Masukkan data yang benar.")
-        awal()
+            if error_count == 2:
+                print("Anda telah melakukan 2 kesalahan. Silakan coba lagi.")
+                error_count = 0 
+            
+            if i == anu - 1:
+                print("Anda telah melakukan percobaan 3 kali. Akses diblokir.")
+                loading(10)  
+                print("Silahkan masukkan data kembali.")
+                login()
 
 # ----------------------------------------- Menu Administrasi! ---------------------------------------------
 
@@ -1146,78 +1151,24 @@ def menu_pasien(username):
 # ----------------------------------------------- BPJS AREA ---------------------------------------------------------
 
 def ajuan_obat():
-    input_obat = input("Masukkan nama obat yang ingin Anda pesan: ").lower()
-    if input_obat == "paracetamol":
-        jawab = input("Anda akan menemui mengajukan pembelian obat paracetamol. Konfirmasi? (y/n): ")
-        if jawab == "y":
-            print("Anda bisa mengambilnya di apotek.")
-            menu_bpjs()
-        elif jawab == "n":
-            print("Pengajuan dibatalkan.")
-            menu_bpjs()
-        else:
-            print("Masukkan data yang valid, ulangi pesanan.")
-            ajuan_obat()
-    elif input_obat == "antibiotik":
-        jawab = input("Anda akan menemui mengajukan pembelian obat antibiotik. Konfirmasi? (y/n): ")
-        if jawab == "y":
-            print("Anda bisa mengambilnya di apotek.")
-            menu_bpjs()
-        elif jawab == "n":
-            print("Pengajuan dibatalkan.")
-            menu_bpjs()
-        else:
-            print("Masukkan data yang valid, ulangi pesanan.")
-            ajuan_obat()
-    elif input_obat == "aspirin":
-        jawab = input("Anda akan menemui mengajukan pembelian obat aspirin. Konfirmasi? (y/n): ")
-        if jawab == "y":
-            print("Anda bisa mengambilnya di apotek.")
-            menu_bpjs()
-        elif jawab == "n":
-            print("Pengajuan dibatalkan.")
-            menu_bpjs()
-        else:
-            print("Masukkan data yang valid, ulangi pesanan.")
-            ajuan_obat()
-    else:
-        print("Obat tidak tersedia. Coba cek kembali.")
-        menu_bpjs()
+    obat = {}
+    with open("produkobat.csv", mode="r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            obat[row["Nama Obat"].lower()] = float(row["Harga"])
 
-def ajuan_ruang():
-    input_ruang = input("Masukkan nama obat yang ingin Anda pesan: ").lower()
-    if input_ruang == "paracetamol":
-        jawab = input("Anda akan menemui mengajukan pembelian obat paracetamol. Konfirmasi? (y/n): ")
-        if jawab == "y":
-            print("Anda bisa mengambilnya di apotek.")
+    input_obat = input("Masukkan nama obat yang ingin Anda pesan: ").lower()
+
+    if input_obat in obat:
+        jawab = input(f"Anda akan memesan obat {input_obat} dengan harga Rp{obat[input_obat]}. Konfirmasi? (y/n): ")
+        if jawab.lower() == "y":
+            print(f"Obat {input_obat} berhasil dipesan. Anda bisa mengambilnya di apotek.")
             menu_bpjs()
-        elif jawab == "n":
+        elif jawab.lower() == "n":
             print("Pengajuan dibatalkan.")
             menu_bpjs()
         else:
-            print("Masukkan data yang valid, ulangi pesanan.")
-            ajuan_obat()
-    elif input_ruang == "antibiotik":
-        jawab = input("Anda akan menemui mengajukan pembelian obat antibiotik. Konfirmasi? (y/n): ")
-        if jawab == "y":
-            print("Anda bisa mengambilnya di apotek.")
-            menu_bpjs()
-        elif jawab == "n":
-            print("Pengajuan dibatalkan.")
-            menu_bpjs()
-        else:
-            print("Masukkan data yang valid, ulangi pesanan.")
-            ajuan_obat()
-    elif input_ruang == "aspirin":
-        jawab = input("Anda akan menemui mengajukan pembelian obat aspirin. Konfirmasi? (y/n): ")
-        if jawab == "y":
-            print("Anda bisa mengambilnya di apotek.")
-            menu_bpjs()
-        elif jawab == "n":
-            print("Pengajuan dibatalkan.")
-            menu_bpjs()
-        else:
-            print("Masukkan data yang valid, ulangi pesanan.")
+            print("Masukkan data yang valid, ulangi pemesanan.")
             ajuan_obat()
     else:
         print("Obat tidak tersedia. Coba cek kembali.")
@@ -1255,8 +1206,6 @@ def ajuan_ruang():
     else:
         print("Nomor ruangan tidak valid. Silakan coba lagi.")
         ajuan_ruang()
-
-import csv
 
 def ajuan_dokter():
     dokter = {}
