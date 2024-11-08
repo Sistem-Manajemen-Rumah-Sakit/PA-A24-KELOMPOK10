@@ -6,8 +6,10 @@ SYAUQI ETNA LAZHUARDHY	 	 	(2309116030)
 
 
 # FLOWCHART
-![PADASPRO (1)](https://github.com/user-attachments/assets/3e11e5aa-860b-4e01-9e8f-45fe7c8e98f7)
+![PADDP drawio 1](https://github.com/user-attachments/assets/86b3bc0a-1a8c-4405-ab89-67ad4ce5b362)
 
+
+ 
 # Menampilkan Login
 ![image](https://github.com/user-attachments/assets/36cebec8-c843-4e3d-ac90-3154eea34d83
 
