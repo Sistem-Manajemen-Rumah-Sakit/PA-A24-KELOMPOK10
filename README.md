@@ -1,6 +1,9 @@
 # PA-A24-KELOMPOK10
 Projek Akhir Praktikum Dasar-Dasar Pemograman dengan Tema berupa sistem manajemen Rumah Sakit serta ini adalah fitur yang tersedia pada aplikasi kami kelompok 10
-yang diketuai oleh Putri syafana afrilill
+GRACE VIES ANGEL          	(2409116005) 
+PUTRI SYAFANA APRILIA 	 	 	(2409116015) 
+SYAUQI ETNA LAZHUARDHY	 	 	(2309116030) 
+
 
 # FLOWCHART
 ![PADASPRO (1)](https://github.com/user-attachments/assets/3e11e5aa-860b-4e01-9e8f-45fe7c8e98f7)
