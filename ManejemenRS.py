@@ -402,7 +402,7 @@ def update_jadwal(file_path4):
         update_jadwal(file_path4)
 
 def delete_jadwal(file_path4):
-    nama_dokter = input("Masukkan nama dokter yang ingin dihapus: ").lower()
+    nama_dokter = input("Masukkan nama dokter yang ingin dihapus: ").capitalize()
     df = pd.read_csv(file_path4)
     
     if nama_dokter in df['Nama dokter'].values:
