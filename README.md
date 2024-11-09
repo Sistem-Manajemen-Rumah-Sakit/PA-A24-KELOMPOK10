@@ -1,8 +1,6 @@
 # PA-A24-KELOMPOK10
-Projek Akhir Praktikum Dasar-Dasar Pemograman dengan Tema berupa sistem manajemen Rumah Sakit serta ini adalah fitur yang tersedia pada aplikasi kami kelompok 10
-GRACE VIES ANGEL          	(2409116005) 
-PUTRI SYAFANA APRILIA 	 	 	(2409116015) 
-SYAUQI ETNA LAZHUARDHY	 	 	(2309116030) 
+Projek Akhir Praktikum Dasar-Dasar Pemograman | Sistem Manajemen Rumah Sakit 
+GRACE VIES ANGEL 2409116005 | PUTRI SYAFANA AFRILLIA 2409116015 | SYAUQI ETNA LAZHUARDHY	2409116030
 
 
 # FLOWCHART
